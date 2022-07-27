@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package ibc.applications.swap.v1;
+
+option go_package = "github.com/cosmos/ibc-go/v4/modules/apps/swap/types";
+
+message SwapToken {
+  // the token denomination to be transferred
+  string denom = 1;
+  // the token amount to be transferred
+  string amount = 2;
+  // the decimals of amount
+  string decimal = 3;
+}
+
+message FungibleTokenSwapPacketData {
+  SwapToken send_token = 1;
+  SwapToken receive_token = 2;
+  // the sender address
+  string send_address = 3;
+  // the recipient address on the destination chain to received the receive_token
+  string receive_address = 4;
+  // the address on the destingnation chain
+  optional string counter_party_address = 5;
+}
