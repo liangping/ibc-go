@@ -117,6 +117,18 @@
   
     - [Type](#ibc.applications.interchain_accounts.v1.Type)
   
+- [ibc/applications/swap/v1/swap.proto](#ibc/applications/swap/v1/swap.proto)
+    - [Params](#ibc.applications.swap.v1.Params)
+  
+- [ibc/applications/swap/v1/genesis.proto](#ibc/applications/swap/v1/genesis.proto)
+    - [GenesisState](#ibc.applications.swap.v1.GenesisState)
+  
+- [ibc/applications/swap/v1/tx.proto](#ibc/applications/swap/v1/tx.proto)
+    - [MsgSwap](#ibc.applications.swap.v1.MsgSwap)
+    - [MsgSwapResponse](#ibc.applications.swap.v1.MsgSwapResponse)
+  
+    - [Msg](#ibc.applications.swap.v1.Msg)
+  
 - [ibc/applications/transfer/v1/transfer.proto](#ibc/applications/transfer/v1/transfer.proto)
     - [DenomTrace](#ibc.applications.transfer.v1.DenomTrace)
     - [Params](#ibc.applications.transfer.v1.Params)
@@ -1815,6 +1827,133 @@ host
  <!-- end enums -->
 
  <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="ibc/applications/swap/v1/swap.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## ibc/applications/swap/v1/swap.proto
+
+
+
+<a name="ibc.applications.swap.v1.Params"></a>
+
+### Params
+Params defines the set of IBC transfer parameters.
+NOTE: To prevent a single token from being transferred, set the
+TransfersEnabled parameter to true and then set the bank module's SendEnabled
+parameter for the denomination to false.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `swap_enabled` | [bool](#bool) |  | send_enabled enables or disables all cross-chain token transfers from this chain. |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="ibc/applications/swap/v1/genesis.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## ibc/applications/swap/v1/genesis.proto
+
+
+
+<a name="ibc.applications.swap.v1.GenesisState"></a>
+
+### GenesisState
+GenesisState defines the ibc-transfer genesis state
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `port_id` | [string](#string) |  |  |
+| `params` | [Params](#ibc.applications.swap.v1.Params) |  |  |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="ibc/applications/swap/v1/tx.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## ibc/applications/swap/v1/tx.proto
+
+
+
+<a name="ibc.applications.swap.v1.MsgSwap"></a>
+
+### MsgSwap
+MsgTransfer defines a msg to transfer fungible tokens (i.e Coins) between
+ICS20 enabled chains. See ICS Spec here:
+https://github.com/cosmos/ibc/tree/master/spec/app/ics-020-fungible-token-transfer#data-structures
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `source_port` | [string](#string) |  | the port on which the packet will be sent |
+| `source_channel` | [string](#string) |  | the channel by which the packet will be sent |
+| `supply_token` | [cosmos.base.v1beta1.Coin](#cosmos.base.v1beta1.Coin) |  | the tokens to be transferred |
+| `demand_token` | [cosmos.base.v1beta1.Coin](#cosmos.base.v1beta1.Coin) |  |  |
+| `send_address` | [string](#string) |  | the sender address |
+| `receive_address` | [string](#string) |  | the recipient address on the destination chain |
+| `counterparty_address` | [string](#string) |  |  |
+| `timeout_height` | [ibc.core.client.v1.Height](#ibc.core.client.v1.Height) |  | Timeout height relative to the current block height. The timeout is disabled when set to 0. |
+| `timeout_timestamp` | [uint64](#uint64) |  | Timeout timestamp in absolute nanoseconds since unix epoch. The timeout is disabled when set to 0. |
+
+
+
+
+
+
+<a name="ibc.applications.swap.v1.MsgSwapResponse"></a>
+
+### MsgSwapResponse
+MsgSwapResponse defines the Msg/Swap response type.
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+
+<a name="ibc.applications.swap.v1.Msg"></a>
+
+### Msg
+Msg defines the ibc/swap Msg service.
+
+| Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
+| ----------- | ------------ | ------------- | ------------| ------- | -------- |
+| `Swap` | [MsgSwap](#ibc.applications.swap.v1.MsgSwap) | [MsgSwapResponse](#ibc.applications.swap.v1.MsgSwapResponse) | Transfer defines a rpc handler method for MsgTransfer. | |
 
  <!-- end services -->
 
