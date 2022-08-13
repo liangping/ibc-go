@@ -2,6 +2,7 @@ package e2e
 
 import (
 	"context"
+	feetypes "github.com/cosmos/ibc-go/v5/modules/apps/29-fee/types"
 	"testing"
 	"time"
 
@@ -14,43 +15,21 @@ import (
 
 	"github.com/cosmos/ibc-go/e2e/testsuite"
 	"github.com/cosmos/ibc-go/e2e/testvalues"
-	feetypes "github.com/cosmos/ibc-go/v4/modules/apps/29-fee/types"
-	transfertypes "github.com/cosmos/ibc-go/v4/modules/apps/transfer/types"
-	clienttypes "github.com/cosmos/ibc-go/v4/modules/core/02-client/types"
-	channeltypes "github.com/cosmos/ibc-go/v4/modules/core/04-channel/types"
+	transfertypes "github.com/cosmos/ibc-go/v5/modules/apps/31-atomic-swap/types"
+	clienttypes "github.com/cosmos/ibc-go/v5/modules/core/02-client/types"
+	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
 )
 
-func TestFeeMiddlewareTestSuite(t *testing.T) {
-	suite.Run(t, new(FeeMiddlewareTestSuite))
+func TestAtomicSwapTestSuite(t *testing.T) {
+	suite.Run(t, new(AtomicSwapTestSuite))
 }
 
-type FeeMiddlewareTestSuite struct {
+type AtomicSwapTestSuite struct {
 	testsuite.E2ETestSuite
 }
 
-// RegisterCounterPartyPayee broadcasts a MsgRegisterCounterpartyPayee message.
-func (s *FeeMiddlewareTestSuite) RegisterCounterPartyPayee(ctx context.Context, chain *cosmos.CosmosChain,
-	user broadcast.User, portID, channelID, relayerAddr, counterpartyPayeeAddr string,
-) (sdk.TxResponse, error) {
-	msg := feetypes.NewMsgRegisterCounterpartyPayee(portID, channelID, relayerAddr, counterpartyPayeeAddr)
-	return s.BroadcastMessages(ctx, chain, user, msg)
-}
-
-// QueryCounterPartyPayee queries the counterparty payee of the given chain and relayer address on the specified channel.
-func (s *FeeMiddlewareTestSuite) QueryCounterPartyPayee(ctx context.Context, chain ibc.Chain, relayerAddress, channelID string) (string, error) {
-	queryClient := s.GetChainGRCPClients(chain).FeeQueryClient
-	res, err := queryClient.CounterpartyPayee(ctx, &feetypes.QueryCounterpartyPayeeRequest{
-		ChannelId: channelID,
-		Relayer:   relayerAddress,
-	})
-	if err != nil {
-		return "", err
-	}
-	return res.CounterpartyPayee, nil
-}
-
 // PayPacketFeeAsync broadcasts a MsgPayPacketFeeAsync message.
-func (s *FeeMiddlewareTestSuite) PayPacketFeeAsync(
+func (s *AtomicSwapTestSuite) PayPacketFeeAsync(
 	ctx context.Context,
 	chain *cosmos.CosmosChain,
 	user broadcast.User,
@@ -62,7 +41,7 @@ func (s *FeeMiddlewareTestSuite) PayPacketFeeAsync(
 }
 
 // QueryIncentivizedPacketsForChannel queries the incentivized packets on the specified channel.
-func (s *FeeMiddlewareTestSuite) QueryIncentivizedPacketsForChannel(
+func (s *AtomicSwapTestSuite) QueryIncentivizedPacketsForChannel(
 	ctx context.Context,
 	chain *cosmos.CosmosChain,
 	portId,
@@ -79,7 +58,7 @@ func (s *FeeMiddlewareTestSuite) QueryIncentivizedPacketsForChannel(
 	return res.IncentivizedPackets, err
 }
 
-func (s *FeeMiddlewareTestSuite) TestMsgPayPacketFee_AsyncSingleSender_Succeeds() {
+func (s *AtomicSwapTestSuite) TestMsgPayPacketFee_AsyncSingleSender_Succeeds() {
 	t := s.T()
 	ctx := context.TODO()
 
@@ -198,7 +177,7 @@ func (s *FeeMiddlewareTestSuite) TestMsgPayPacketFee_AsyncSingleSender_Succeeds(
 	})
 }
 
-func (s *FeeMiddlewareTestSuite) TestMultiMsg_MsgPayPacketFeeSingleSender() {
+func (s *AtomicSwapTestSuite) TestMultiMsg_MsgPayPacketFeeSingleSender() {
 	t := s.T()
 	ctx := context.TODO()
 
@@ -309,7 +288,7 @@ func (s *FeeMiddlewareTestSuite) TestMultiMsg_MsgPayPacketFeeSingleSender() {
 	})
 }
 
-func (s *FeeMiddlewareTestSuite) TestMsgPayPacketFee_SingleSender_TimesOut() {
+func (s *AtomicSwapTestSuite) TestMsgPayPacketFee_SingleSender_TimesOut() {
 	t := s.T()
 	ctx := context.TODO()
 
