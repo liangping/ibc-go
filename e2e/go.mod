@@ -4,7 +4,7 @@ go 1.18
 
 replace (
 	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
-	github.com/cosmos/ibc-go/v5 => github.com/liangping/ibc-go/v5 v5.0.0
+	github.com/cosmos/ibc-go/v5 => github.com/liangping/ibc-go/v5 v5.0.0-alpha.1
 )
 
 require (
